@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Market Stocks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(#111, #000);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    header {
+      padding: 1rem 2rem;
+      background: rgba(255, 255, 255, 0.03);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #333;
+    }
+
+    header h1 {
+      background: linear-gradient(90deg, #00ffe0, #ff1493);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.5rem;
+    }
+
+    .profile {
+      font-size: 1.2rem;
+    }
+
+    .stocks-container {
+      max-width: 960px;
+      margin: 3rem auto;
+      background: rgba(255,255,255,0.05);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 40px rgba(0,255,255,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #00ffe0;
+      margin-bottom: 2rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      border: 1px solid #444;
+      text-align: center;
+    }
+
+    th {
+      background: #00ffe0;
+      color: #000;
+    }
+
+    .highlight {
+      color: #00ffcc;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>SMART STOCK</h1>
+    <div class="profile">👤</div>
+  </header>
+
+  <div class="stocks-container">
+    <h2>Market Stocks</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Stock</th>
+          <th>Price</th>
+          <th>Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Replace with dynamic stock data -->
+        <tr>
+          <td>AAPL</td>
+          <td>$150</td>
+          <td class="highlight">+0.5%</td>
+        </tr>
+        <tr>
+          <td>GOOGL</td>
+          <td>$2800</td>
+          <td class="highlight">-0.3%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>

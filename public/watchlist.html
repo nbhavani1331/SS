@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Watchlist - Smart Stock</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      background: #0e0e0e;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid #333;
+    }
+
+    header h1 {
+      background: linear-gradient(90deg, #00ffe0, #1e90ff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.5rem;
+    }
+
+    .profile {
+      font-size: 1.2rem;
+    }
+
+    .watchlist-container {
+      max-width: 960px;
+      margin: 3rem auto;
+      background: rgba(255,255,255,0.05);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.08);
+    }
+
+    h2 {
+      text-align: center;
+      color: #00ffe0;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 0.8rem 1.2rem;
+      background: rgba(255,255,255,0.02);
+      margin: 0.5rem 0;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    button {
+      background: #00ffe0;
+      color: #000;
+      border: none;
+      padding: 0.4rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00e6cc;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>SMART STOCK</h1>
+    <div class="profile">👤</div>
+  </header>
+
+  <div class="watchlist-container">
+    <h2>Your Watchlist</h2>
+    <ul>
+      <li>
+        <span>TSLA - $720</span>
+        <button>Remove</button>
+      </li>
+      <li>
+        <span>NFLX - $560</span>
+        <button>Remove</button>
+      </li>
+    </ul>
+  </div>
+
+</body>
+</html>

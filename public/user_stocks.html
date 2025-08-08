@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Portfolio</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg-dark: #0e0e0e;
+      --bg-card: #1a1a1a;
+      --text-light: #e0e0e0;
+      --primary: #00ffcc;
+      --secondary: #3b82f6;
+      --hover: #00ccaa;
+      --row-alt: #141414;
+      --row-even: #1e1e1e;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    /* Background animation */
+    .background-graph {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100vh;
+      z-index: -1;
+      overflow: hidden;
+    }
+    canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+
+    header {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      animation: fadeInDown 1s ease;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #000;
+      font-weight: bold;
+    }
+
+    nav a {
+      color: black;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #222;
+    }
+
+    .container {
+      padding: 30px;
+      max-width: 900px;
+      margin: auto;
+      animation: fadeIn 1.2s ease;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin-top: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: var(--bg-card);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border: 1px solid #333;
+    }
+
+    th {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      color: #000;
+      font-weight: bold;
+    }
+
+    tbody tr {
+      transition: background 0.3s, transform 0.2s;
+    }
+    tbody tr:nth-child(even) {
+      background-color: var(--row-even);
+    }
+    tbody tr:nth-child(odd) {
+      background-color: var(--row-alt);
+    }
+    tbody tr:hover {
+      background-color: #222;
+      transform: scale(1.02);
+    }
+
+    canvas {
+      margin-top: 30px;
+      max-width: 100%;
+      height: 300px !important;
+    }
+
+    .btn-refresh {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      margin-top: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.3s, background 0.3s;
+    }
+    .btn-refresh:hover {
+      transform: scale(1.05);
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="background-graph">
+    <canvas id="bgCanvas"></canvas>
+  </div>
+
+  <header>
+    <h1>📊 My Stocks</h1>
+    <nav>
+      <a href="index.html">🏠 Home</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Stock Symbol</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody id="portfolio-body"></tbody>
+      </table>
+    </div>
+
+    <canvas id="portfolioChart"></canvas>
+
+    <button class="btn-refresh" onclick="refreshPortfolio()">🔄 Refresh</button>
+  </div>
+
+  <script>
+    let chart;
+
+    function fetchPortfolio() {
+      fetch('http://localhost:4000/api/getUserStocks')
+        .then(res => res.json())
+        .then(data => {
+          const tbody = document.getElementById('portfolio-body');
+          tbody.innerHTML = '';
+          const labels = [];
+          const quantities = [];
+
+          data.forEach(stock => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${stock.stock_symbol}</td>
+              <td>${stock.quantity}</td>
+            `;
+            tbody.appendChild(row);
+
+            labels.push(stock.stock_symbol);
+            quantities.push(stock.quantity);
+          });
+
+          drawChart(labels, quantities);
+        })
+        .catch(err => {
+          alert("Failed to fetch portfolio: " + err.message);
+        });
+    }
+
+    function drawChart(labels, data) {
+      const ctx = document.getElementById('portfolioChart').getContext('2d');
+      if (chart) chart.destroy();
+
+      chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Quantity Owned',
+            data: data,
+            backgroundColor: '#00ffcc',
+            borderColor: '#3b82f6',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: '#333' },
+              ticks: { color: '#e0e0e0' }
+            },
+            x: {
+              grid: { color: '#333' },
+              ticks: { color: '#e0e0e0' }
+            }
+          },
+          animation: {
+            duration: 1200,
+            easing: 'easeOutBounce'
+          }
+        }
+      });
+    }
+
+    function refreshPortfolio() {
+      fetchPortfolio();
+    }
+
+    // Background animation like smart assistant
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = Array.from({ length: 50 }).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 2 + 0.5,
+      dx: Math.random() * 0.5 - 0.25,
+      dy: Math.random() * 0.5 - 0.25,
+      color: `hsl(${Math.random() * 360}, 100%, 75%)`
+    }));
+
+    function animateBg() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+      requestAnimationFrame(animateBg);
+    }
+    animateBg();
+
+    window.onload = fetchPortfolio;
+  </script>
+
+</body>
+</html>

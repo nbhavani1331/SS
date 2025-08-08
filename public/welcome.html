@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to SMART STOCK</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: linear-gradient(135deg, #0f0f0f, #1c1c2b);
+      color: #ffffff;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    .logo {
+      font-size: 3rem;
+      font-weight: bold;
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(90deg, #00ffcc, #3b82f6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      0% { text-shadow: 0 0 10px #00ffcc; }
+      100% { text-shadow: 0 0 20px #3b82f6; }
+    }
+    .tagline {
+      font-size: 1.3rem;
+      margin-top: 20px;
+      color: #cccccc;
+      opacity: 0;
+      animation: fadeIn 2s ease-in forwards 1.5s;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    .stock-image {
+      margin-top: 40px;
+      max-width: 300px;
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+    .enter-text {
+      margin-top: 60px;
+      font-size: 1rem;
+      color: #90ee90;
+      animation: blink 1.5s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+  </style>
+  <meta http-equiv="refresh" content="4;url=index.html" />
+</head>
+<body>
+  <div class="logo">SMART STOCK</div>
+  <div class="tagline">Your gateway to intelligent investing</div>
+  <img src="https://cdn-icons-png.flaticon.com/512/2331/2331970.png" alt="Stocks" class="stock-image">
+  <div class="enter-text">Entering dashboard...</div>
+</body>
+</html>

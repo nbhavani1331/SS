@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Set Investment Goal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to bottom, #1f1c2c, #928dab);
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    header {
+      padding: 1rem 2rem;
+      background: rgba(255,255,255,0.03);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      background: linear-gradient(90deg, #00ffe0, #ff1493);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 3rem auto;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(0,255,255,0.1);
+    }
+
+    h2 {
+      color: #00ffe0;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-top: 1.2rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 5px;
+      border: none;
+      background: #222;
+      color: #fff;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.8rem 2rem;
+      border: none;
+      background: #00ffe0;
+      color: #000;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00e6cc;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>SMART STOCK</h1>
+    <div class="profile">👤</div>
+  </header>
+
+  <div class="container">
+    <h2>Set Your Investment Goal</h2>
+    <form action="InvestmentGoalServlet" method="POST">
+      <label for="goalAmount">Goal Amount ($)</label>
+      <input type="number" name="goalAmount" id="goalAmount" required />
+
+      <label for="goalPeriod">Time Period (in months)</label>
+      <input type="number" name="goalPeriod" id="goalPeriod" required />
+
+      <button type="submit">Save Goal</button>
+    </form>
+  </div>
+
+</body>
+</html>

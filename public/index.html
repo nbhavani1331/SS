@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SMART STOCK</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #0e0e0e;
+      color: #ffffff;
+      font-family: 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Background Canvas */
+    #bgCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .logo {
+      font-size: 30px;
+      font-weight: bold;
+      background: linear-gradient(90deg, #3b82f6, #00ffcc);
+      background-clip: text;
+      color: transparent;
+      animation: glow 2s infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #3b82f6; }
+      to { text-shadow: 0 0 20px #00ffcc; }
+    }
+
+    /* Grid Layout */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      margin: auto;
+      padding: 0 20px 60px;
+    }
+    .card {
+      background-color: #1a1a1a;
+      border: 1px solid #3b82f6;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .card:hover { transform: translateY(-5px); }
+    .card h2 { margin-bottom: 10px; }
+    .card p { margin-bottom: 20px; }
+    .card a {
+      text-decoration: none;
+      background-color: #3b82f6;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    /* Smart Assistant Floating Button */
+    .chat-button {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #3b82f6;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.6);
+      z-index: 1000;
+    }
+    .chat-float {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      background: #1f1f1f;
+      border: 1px solid #3b82f6;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+      width: 300px;
+      max-height: 500px;
+      display: none;
+      flex-direction: column;
+      z-index: 1000;
+      animation: slideIn 0.3s ease-out;
+    }
+    @keyframes slideIn {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .chat-header {
+      background: #3b82f6;
+      color: white;
+      padding: 10px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .chat-body {
+      padding: 10px;
+      height: 230px;
+      overflow-y: auto;
+      background-color: #262626;
+      color: #ccc;
+      font-size: 14px;
+    }
+    .chat-input {
+      padding: 10px;
+      background: #1a1a1a;
+    }
+    .chat-input input {
+      width: 90%;
+      padding: 8px;
+      border-radius: 10px;
+      border: none;
+    }
+    .chat-suggestions {
+      max-height: 120px;
+      overflow-y: auto;
+      background: #111;
+      padding: 10px;
+    }
+    .chat-suggestions div {
+      background: #222;
+      padding: 8px;
+      margin: 5px 0;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .chat-suggestions div:hover {
+      background: #3b82f6;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">SMART STOCK</div>
+  </header>
+
+  <!-- Cards -->
+  <div class="grid-container">
+    <!-- MMI -->
+    <div class="card" style="grid-column: span 2;">
+      <h2>Market Mood Index (MMI)</h2>
+      <p>Real-time analysis of market sentiment.</p>
+      <a href="mmi.html">View MMI</a>
+    </div>
+
+    <!-- Buy & Sell -->
+    <div class="card">
+      <h2>Buy Stocks</h2>
+      <p>Find and invest in your favorite stocks.</p>
+      <a href="buy.html">Buy Now</a>
+    </div>
+    <div class="card">
+      <h2>Sell Stocks</h2>
+      <p>Track and sell your holdings smartly.</p>
+      <a href="sell.html">Sell Now</a>
+    </div>
+
+    <!-- Watchlist & Portfolio -->
+    <div class="card">
+      <h2>Watchlist</h2>
+      <p>Keep an eye on your favorite stocks.</p>
+      <a href="watchlist.html">View Watchlist</a>
+    </div>
+    <div class="card">
+      <h2>Portfolio</h2>
+      <p>Total Investment: ₹1,00,000<br>Current Value: ₹1,12,500<br>Gain: ₹12,500</p>
+      <a href="portfolio-summary.html">View Portfolio</a>
+    </div>
+
+    <!-- User Stocks & Analysis -->
+    <div class="card">
+      <h2>User Stocks</h2>
+      <p>Check the stocks you own and their details.</p>
+      <a href="user-stocks.html">View Stocks</a>
+    </div>
+    <div class="card">
+      <h2>Analysis</h2>
+      <p>Technical and fundamental analysis tools.</p>
+      <a href="analysis.html">Analyze</a>
+    </div>
+
+    <!-- Guide -->
+    <div class="card" style="grid-column: span 2;">
+      <h2>Beginner's Guide</h2>
+      <p>Learn how to invest smartly and grow your wealth.</p>
+      <a href="guide.html">Read Guide</a>
+    </div>
+  </div>
+
+  <!-- Smart Assistant Button -->
+  <div class="chat-button" onclick="toggleChat()">💬</div>
+
+  <!-- Smart Assistant -->
+  <div class="chat-float" id="chatBox">
+    <div class="chat-header">Smart Assistant</div>
+    <div class="chat-suggestions" id="suggestions">
+      <div onclick="askBot('What is MMI?')">📊 What is MMI?</div>
+      <div onclick="askBot('How to buy stocks?')">💹 How to buy stocks?</div>
+      <div onclick="askBot('What is a watchlist?')">📋 What is a watchlist?</div>
+      <div onclick="askBot('How to sell stocks?')">💰 How to sell stocks?</div>
+      <div onclick="askBot('What are investment goals?')">🎯 What are investment goals?</div>
+      <div onclick="askBot('Explain portfolio gain calculation')">📈 Explain portfolio gain calculation</div>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <p><strong>Bot:</strong> Hi! Ask me about stocks, MMI, or goals.</p>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Type your question..." onkeydown="handleKey(event)" />
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    function toggleChat() {
+      const box = document.getElementById('chatBox');
+      box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
+      box.style.flexDirection = 'column';
+    }
+    function speak(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(utterance);
+    }
+    function askBot(question) {
+      const chatBody = document.getElementById('chatBody');
+      chatBody.innerHTML += `<p><strong>You:</strong> ${question}</p>`;
+      let reply = '';
+      const lower = question.toLowerCase();
+      if (lower.includes('mmi')) reply = 'MMI shows current market sentiment.';
+      else if (lower.includes('goal')) reply = 'Investment goals help you plan long term.';
+      else if (lower.includes('stock')) reply = 'You can search stocks under the Buy section.';
+      else if (lower.includes('watchlist')) reply = 'Your Watchlist is available on the main page.';
+      else reply = 'Sorry, I am still learning.';
+      chatBody.innerHTML += `<p><strong>Bot:</strong> ${reply}</p>`;
+      speak(reply);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+    function handleKey(e) {
+      if (e.key === 'Enter') {
+        const input = document.getElementById('userInput');
+        const msg = input.value.trim();
+        if (!msg) return;
+        askBot(msg);
+        input.value = '';
+      }
+    }
+
+    // Background Animation: particles + lines + $ signs
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, particles;
+    function init() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      particles = Array.from({ length: 50 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        dx: (Math.random() - 0.5) * 1.5,
+        dy: (Math.random() - 0.5) * 1.5,
+        size: Math.random() * 3 + 1
+      }));
+    }
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = '#0e0e0e';
+      ctx.fillRect(0, 0, w, h);
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = '#00ffcc';
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < 0 || p.x > w) p.dx *= -1;
+        if (p.y < 0 || p.y > h) p.dy *= -1;
+      });
+      requestAnimationFrame(draw);
+    }
+    window.addEventListener('resize', init);
+    init();
+    draw();
+  </script>
+</body>
+</html>

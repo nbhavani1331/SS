@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Beginner's Guide - SMART STOCK</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --primary: #a855f7;
+      --secondary: #9333ea;
+      --bg1: #0f0c29;
+      --bg2: #302b63;
+      --bg3: #24243e;
+      --card: #1f1f2f;
+      --text: #f3f4f6;
+      --accent: #8b5cf6;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
+      background-size: 300% 300%;
+      animation: backgroundShift 20s ease infinite;
+      color: var(--text);
+    }
+
+    @keyframes backgroundShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      max-width: 960px;
+      margin: auto;
+      padding: 40px 20px;
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      font-weight: bold;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text; /* Safe fallback */
+      color: transparent;    /* Required to show the gradient */
+      display: inline-block; /* Must be inline or inline-block */
+    }
+    
+    
+
+    header p {
+      font-style: italic;
+      color: #d1d5db;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 30px;
+      margin: 20px 0;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+    }
+
+    .card h2 {
+      color: var(--accent);
+      margin-bottom: 15px;
+    }
+
+    ul, ol {
+      padding-left: 20px;
+      color: #e0e0e0;
+    }
+
+    li {
+      line-height: 1.7;
+    }
+
+    .tip {
+      background: linear-gradient(to right, #42275a, #734b6d);
+      padding: 20px;
+      border-left: 5px solid var(--primary);
+      border-radius: 10px;
+      font-weight: 500;
+      margin: 30px 0;
+      color: #f0f0f0;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .back-home {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .back-home a {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      display: inline-block;
+      transition: transform 0.3s ease, background 0.3s;
+    }
+
+    .back-home a:hover {
+      background: linear-gradient(to right, #7c3aed, #a855f7);
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 20px;
+      }
+      header h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>📘 Beginner's Guide to the Stock Market</h1>
+      <p>Welcome to <strong>SMART STOCK</strong> – Where Investing Begins with Clarity!</p>
+    </header>
+
+    <div class="card">
+      <h2>🔹 What is a Stock?</h2>
+      <p>A <strong>stock</strong> represents a small piece of ownership in a company. When you buy one, you're buying a slice of that business and its future potential.</p>
+    </div>
+
+    <div class="card">
+      <h2>🔹 Why Do Companies Sell Stocks?</h2>
+      <p>To grow! Companies raise money by selling shares to investors who believe in their vision. You become part of their story.</p>
+    </div>
+
+    <div class="card">
+      <h2>🔹 How Do You Make Money?</h2>
+      <ul>
+        <li><strong>Capital Gains:</strong> Buy low, sell high!</li>
+        <li><strong>Dividends:</strong> Some companies share profits with shareholders.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>🔹 What is a Portfolio?</h2>
+      <p>Your <strong>portfolio</strong> is your personal collection of investments. In SMART STOCK, you can easily track and manage all your stocks from one place.</p>
+    </div>
+
+    <div class="card">
+      <h2>🔹 Market Mood Explained</h2>
+      <p>Market mood reflects the emotional state of investors. Are they feeling <strong>greedy</strong>? Or fearful? Use this tool to time your moves smartly.</p>
+    </div>
+
+    <div class="card">
+      <h2>🔹 BUY vs SELL</h2>
+      <ul>
+        <li><strong>BUY:</strong> You're investing in a stock you believe will grow.</li>
+        <li><strong>SELL:</strong> You're cashing out — hopefully for a gain!</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>🔹 Using SMART STOCK</h2>
+      <ol>
+        <li>Fill in the <strong>Add Stock</strong> form with details of your trade.</li>
+        <li>View your full stock list with <strong>Fetch Data</strong>.</li>
+        <li>Monitor your <strong>Portfolio Summary</strong> to understand your position.</li>
+        <li>Check <strong>Analysis</strong> for charts, insights, and trends.</li>
+      </ol>
+    </div>
+
+    <div class="tip">
+      🧠 <strong>Pro Tip:</strong> Start small. Learn consistently. Don't chase trends blindly. Use your portfolio as a learning playground.
+    </div>
+
+    <div class="card">
+      <h2>🔹 Final Thoughts</h2>
+      <p>The stock market is not a game of luck. It’s a journey of learning, patience, and growth. SMART STOCK is here to walk beside you every step of the way.</p>
+    </div>
+
+    <div class="back-home">
+      <a href="index.html">← Back to SMART STOCK</a>
+    </div>
+  </div>
+
+</body>
+</html>

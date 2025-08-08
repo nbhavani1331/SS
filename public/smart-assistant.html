@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Assistant</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #0e0e0e;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .chat-box {
+    width: 400px;
+    background: #1f1f1f;
+    border: 1px solid #3b82f6;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .chat-header {
+    background: #3b82f6;
+    padding: 10px;
+    font-weight: bold;
+  }
+  .chat-suggestions {
+    display: flex;
+    overflow-x: auto;
+    padding: 6px;
+    gap: 8px;
+    background: #1f1f1f;
+    border-bottom: 1px solid #3b82f6;
+  }
+  .chat-suggestions button {
+    flex: 0 0 auto;
+    background: #333;
+    border: 1px solid #3b82f6;
+    border-radius: 20px;
+    padding: 6px 12px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .chat-body {
+    flex: 1;
+    padding: 10px;
+    background: #262626;
+    color: #ccc;
+    overflow-y: auto;
+  }
+  .chat-input {
+    padding: 10px;
+    background: #1a1a1a;
+  }
+  .chat-input input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 10px;
+    border: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="chat-box">
+  <div class="chat-header">Smart Assistant</div>
+  <div class="chat-suggestions" id="suggestions">
+    <button>📊 What is MMI?</button>
+    <button>💹 How to buy stocks?</button>
+    <button>📈 Explain market trends</button>
+    <button>🏦 What is an investment goal?</button>
+    <button>📋 How to see my watchlist?</button>
+    <button>💰 Tips for beginners</button>
+  </div>
+  <div class="chat-body" id="chatBody">
+    <p><strong>Bot:</strong> Hi! Ask me about stocks, MMI, or goals.</p>
+  </div>
+  <div class="chat-input">
+    <input type="text" id="userInput" placeholder="Type your question..." onkeydown="handleKey(event)">
+  </div>
+</div>
+
+<script>
+  const suggestions = document.getElementById('suggestions');
+  const chatBody = document.getElementById('chatBody');
+  const userInput = document.getElementById('userInput');
+
+  suggestions.addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON') {
+      askBot(e.target.innerText);
+    }
+  });
+
+  function handleKey(e) {
+    if (e.key === 'Enter') {
+      const msg = userInput.value.trim();
+      if (!msg) return;
+      askBot(msg);
+      userInput.value = '';
+    }
+  }
+
+  function askBot(msg) {
+    chatBody.innerHTML += `<p><strong>You:</strong> ${msg}</p>`;
+    let reply = getBotReply(msg);
+    chatBody.innerHTML += `<p><strong>Bot:</strong> ${reply}</p>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
+    speakText(reply);
+  }
+
+  function getBotReply(message) {
+    const lower = message.toLowerCase();
+    if (lower.includes('mmi')) return '📊 MMI shows the current market sentiment.';
+    if (lower.includes('goal')) return '🏦 An investment goal helps you plan long term.';
+    if (lower.includes('stock')) return '💹 You can search stocks under the Buy section.';
+    if (lower.includes('watchlist')) return '📋 Your Watchlist is available on the main page.';
+    if (lower.includes('trend')) return '📈 Market trends indicate the general market direction.';
+    return '🤔 Sorry, I am still learning and don’t have an answer for that.';
+  }
+
+  function speakText(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    speechSynthesis.speak(utterance);
+  }
+</script>
+
+</body>
+</html>

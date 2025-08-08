@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Analysis - Smart Stock</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      padding: 20px;
+    }
+
+    header {
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid #333;
+    }
+
+    header h1 {
+      background: linear-gradient(90deg, #00ffe0, #1e90ff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.5rem;
+    }
+
+    .profile {
+      font-size: 1.2rem;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 3rem auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: space-around;
+    }
+
+    .chart-box {
+      width: 45%;
+      min-width: 300px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 0 20px rgba(0,255,255,0.1);
+      cursor: pointer;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup canvas {
+      background: #111;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      font-size: 2rem;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    h2 {
+      text-align: center;
+      color: #00ffe0;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>SMART STOCK</h1>
+  <div class="profile">👤</div>
+</header>
+
+<div class="container">
+  <div class="chart-box" onclick="openPopup('line')">
+    <h2>Stock Performance</h2>
+    <canvas id="lineChart"></canvas>
+  </div>
+  <div class="chart-box" onclick="openPopup('sector')">
+    <h2>Sector-Wise Investment</h2>
+    <canvas id="sectorChart"></canvas>
+  </div>
+</div>
+
+<!-- Popups -->
+<div id="popup-line" class="popup" onclick="closePopup('line')">
+  <span class="close-btn">&times;</span>
+  <canvas id="popupLineChart"></canvas>
+</div>
+
+<div id="popup-sector" class="popup" onclick="closePopup('sector')">
+  <span class="close-btn">&times;</span>
+  <canvas id="popupSectorChart"></canvas>
+</div>
+
+<script>
+  const lineData = {
+    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+    datasets: [{
+      label: 'AAPL',
+      data: [150, 155, 153, 160, 165],
+      borderColor: '#00ffe0',
+      backgroundColor: 'rgba(0, 255, 224, 0.2)',
+      tension: 0.4,
+      fill: true
+    }]
+  };
+
+  const pieData = {
+    labels: ['Tech', 'Pharma', 'Finance', 'Auto', 'Energy'],
+    datasets: [{
+      data: [35, 15, 25, 10, 15],
+      backgroundColor: [
+        '#00ffe0',
+        '#ff6384',
+        '#36a2eb',
+        '#cc65fe',
+        '#ffce56'
+      ],
+      hoverOffset: 10
+    }]
+  };
+
+  const options = {
+    responsive: true,
+    plugins: { legend: { labels: { color: '#fff' } } },
+    scales: {
+      x: { ticks: { color: '#ccc' }, grid: { color: '#333' }},
+      y: { ticks: { color: '#ccc' }, grid: { color: '#333' }}
+    }
+  };
+
+  const lineChart = new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: lineData,
+    options: options
+  });
+
+  const sectorChart = new Chart(document.getElementById('sectorChart'), {
+    type: 'doughnut',
+    data: pieData,
+    options: {
+      plugins: { legend: { labels: { color: '#fff' } } }
+    }
+  });
+
+  // Popup charts
+  let popupLineChart, popupSectorChart;
+
+  function openPopup(type) {
+    document.getElementById(`popup-${type}`).style.display = 'flex';
+    if (type === 'line' && !popupLineChart) {
+      popupLineChart = new Chart(document.getElementById('popupLineChart'), {
+        type: 'line',
+        data: lineData,
+        options: options
+      });
+    }
+    if (type === 'sector' && !popupSectorChart) {
+      popupSectorChart = new Chart(document.getElementById('popupSectorChart'), {
+        type: 'doughnut',
+        data: pieData,
+        options: {
+          plugins: { legend: { labels: { color: '#fff' } } }
+        }
+      });
+    }
+  }
+
+  function closePopup(type) {
+    document.getElementById(`popup-${type}`).style.display = 'none';
+  }
+</script>
+
+</body>
+</html>

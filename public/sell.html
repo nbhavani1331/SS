@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sell Stocks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    header {
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid #333;
+    }
+
+    header h1 {
+      background: linear-gradient(90deg, #00ffe0, #1e90ff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.5rem;
+    }
+
+    .profile {
+      font-size: 1.2rem;
+    }
+
+    .sell-form-container {
+      max-width: 700px;
+      margin: 3rem auto;
+      background: #1c1c1c;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,255,200,0.15);
+    }
+
+    h2 {
+      text-align: center;
+      color: #00ffe0;
+    }
+
+    label {
+      display: block;
+      margin: 1rem 0 0.5rem;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 5px;
+      background: #111;
+      color: #fff;
+      border: none;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.8rem 2rem;
+      background: #00ffe0;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: #00e6cc;
+    }
+
+    canvas#bgCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bgCanvas"></canvas>
+
+  <header>
+    <h1>SMART STOCK</h1>
+    <div class="profile">👤</div>
+  </header>
+
+  <div class="sell-form-container">
+    <h2>Sell Stocks</h2>
+    <form action="/SMARTSTOCKS/SellServlet" method="POST">
+      <label for="stockName">Stock Name:</label>
+      <select name="stockName" id="stockName">
+        <option value="AAPL">Apple (AAPL)</option>
+        <option value="GOOGL">Google (GOOGL)</option>
+        <option value="TSLA">Tesla (TSLA)</option>
+      </select>
+
+      <label for="quantity">Quantity:</label>
+      <input type="number" name="quantity" id="quantity" required />
+
+      <label for="pricePerShare">Price per Share:</label>
+      <input type="text" name="pricePerShare" id="pricePerShare" required />
+
+      <button type="submit">Sell Now</button>
+    </form>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = Array.from({ length: 50 }).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 2 + 1,
+      dx: Math.random() * 0.5 - 0.25,
+      dy: Math.random() * 0.5 - 0.25,
+      color: `hsl(${Math.random() * 360}, 100%, 70%)`
+    }));
+
+    const dollars = Array.from({ length: 15 }).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      speed: Math.random() * 1.5 + 1,
+      size: Math.floor(Math.random() * 10) + 30,
+      color: ['#00FFCC', '#FFD700', '#1E90FF'][Math.floor(Math.random() * 3)]
+    }));
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+
+      dollars.forEach(d => {
+        ctx.fillStyle = d.color;
+        ctx.font = `bold ${d.size}px Arial`;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = d.color;
+        ctx.fillText('$', d.x, d.y);
+        d.y -= d.speed;
+        if (d.y < -50) {
+          d.y = canvas.height + Math.random() * 200;
+          d.x = Math.random() * canvas.width;
+        }
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
