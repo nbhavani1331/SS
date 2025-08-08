@@ -14,7 +14,8 @@
     height: 100vh;
   }
   .chat-box {
-    width: 400px;
+    width: 420px;
+    height: 600px;
     background: #1f1f1f;
     border: 1px solid #3b82f6;
     border-radius: 10px;
@@ -29,21 +30,29 @@
   }
   .chat-suggestions {
     display: flex;
-    overflow-x: auto;
+    flex-direction: column;
+    overflow-y: auto;
     padding: 6px;
-    gap: 8px;
+    gap: 6px;
     background: #1f1f1f;
     border-bottom: 1px solid #3b82f6;
+    max-height: 150px; /* vertical scroll area */
   }
   .chat-suggestions button {
     flex: 0 0 auto;
     background: #333;
     border: 1px solid #3b82f6;
-    border-radius: 20px;
-    padding: 6px 12px;
+    border-radius: 8px;
+    padding: 6px 10px;
     color: #fff;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 13px;
+    text-align: left;
+    transition: background 0.2s;
+  }
+  .chat-suggestions button:hover {
+    background: #3b82f6;
+    color: #fff;
   }
   .chat-body {
     flex: 1;
@@ -68,31 +77,56 @@
 
 <div class="chat-box">
   <div class="chat-header">Smart Assistant</div>
-  <div class="chat-suggestions" id="suggestions">
-    <button>📊 What is MMI?</button>
-    <button>💹 How to buy stocks?</button>
-    <button>📈 Explain market trends</button>
-    <button>🏦 What is an investment goal?</button>
-    <button>📋 How to see my watchlist?</button>
-    <button>💰 Tips for beginners</button>
-  </div>
+
+  <!-- Suggestions list -->
+  <div class="chat-suggestions" id="suggestions"></div>
+
+  <!-- Chat body -->
   <div class="chat-body" id="chatBody">
-    <p><strong>Bot:</strong> Hi! Ask me about stocks, MMI, or goals.</p>
+    <p><strong>Bot:</strong> Hi! Ask me about stocks, MMI, goals, or other market topics.</p>
   </div>
+
+  <!-- Input box -->
   <div class="chat-input">
     <input type="text" id="userInput" placeholder="Type your question..." onkeydown="handleKey(event)">
   </div>
 </div>
 
 <script>
-  const suggestions = document.getElementById('suggestions');
   const chatBody = document.getElementById('chatBody');
   const userInput = document.getElementById('userInput');
+  const suggestionsDiv = document.getElementById('suggestions');
 
-  suggestions.addEventListener('click', (e) => {
-    if (e.target.tagName === 'BUTTON') {
-      askBot(e.target.innerText);
-    }
+  // Expanded Q&A list
+  const qaList = [
+    { q: "📊 What is MMI?", a: "📊 The Market Mood Index shows the current market sentiment, ranging from extreme fear to extreme greed." },
+    { q: "💹 How to buy stocks?", a: "💹 Use the Buy section in the app, select your stock, enter quantity, and confirm your purchase." },
+    { q: "📈 Explain market trends", a: "📈 Market trends represent the general direction of stock prices over a period — uptrend, downtrend, or sideways." },
+    { q: "🏦 What is an investment goal?", a: "🏦 An investment goal is a target you set for your investments, like retirement, buying a house, or short-term gains." },
+    { q: "📋 How to see my watchlist?", a: "📋 Your watchlist is on the main dashboard, showing stocks you track without owning." },
+    { q: "💰 Tips for beginners", a: "💰 Start with small investments, diversify, research before buying, and focus on long-term growth." },
+    { q: "📉 What is a bear market?", a: "📉 A bear market is when stock prices fall by 20% or more over a sustained period." },
+    { q: "🐂 What is a bull market?", a: "🐂 A bull market is when stock prices rise consistently over time, showing investor confidence." },
+    { q: "📆 What is day trading?", a: "📆 Day trading involves buying and selling stocks within the same trading day." },
+    { q: "📊 What is diversification?", a: "📊 Diversification means spreading investments across different sectors to reduce risk." },
+    { q: "💵 What are dividends?", a: "💵 Dividends are payments made by a company to its shareholders, usually from profits." },
+    { q: "📈 What is market capitalization?", a: "📈 Market capitalization is the total value of a company's shares, calculated as share price × total shares." },
+    { q: "📉 What is P/E ratio?", a: "📉 The Price-to-Earnings ratio compares a company’s share price to its earnings per share." },
+    { q: "🛡️ What is risk tolerance?", a: "🛡️ Risk tolerance is how much volatility and potential loss you can handle in your investments." },
+    { q: "💹 What is a stock symbol?", a: "💹 A stock symbol is a unique abbreviation used to identify publicly traded companies." },
+    { q: "🔍 How to research a stock?", a: "🔍 Look at company financials, sector performance, P/E ratio, news, and analyst ratings." },
+    { q: "📜 What is an IPO?", a: "📜 An Initial Public Offering is when a company first sells shares to the public." },
+    { q: "📊 What is technical analysis?", a: "📊 Technical analysis studies past price movements and trading volumes to predict future price action." },
+    { q: "💼 What is a portfolio?", a: "💼 A portfolio is the collection of all your investments, including stocks, bonds, and cash." },
+    { q: "⚖️ What is asset allocation?", a: "⚖️ Asset allocation is dividing your investments across asset classes like stocks, bonds, and real estate." }
+  ];
+
+  // Load questions vertically
+  qaList.forEach(item => {
+    const btn = document.createElement('button');
+    btn.textContent = item.q;
+    btn.addEventListener('click', () => askBot(item.q));
+    suggestionsDiv.appendChild(btn);
   });
 
   function handleKey(e) {
@@ -106,7 +140,7 @@
 
   function askBot(msg) {
     chatBody.innerHTML += `<p><strong>You:</strong> ${msg}</p>`;
-    let reply = getBotReply(msg);
+    const reply = getBotReply(msg);
     chatBody.innerHTML += `<p><strong>Bot:</strong> ${reply}</p>`;
     chatBody.scrollTop = chatBody.scrollHeight;
     speakText(reply);
@@ -114,12 +148,8 @@
 
   function getBotReply(message) {
     const lower = message.toLowerCase();
-    if (lower.includes('mmi')) return '📊 MMI shows the current market sentiment.';
-    if (lower.includes('goal')) return '🏦 An investment goal helps you plan long term.';
-    if (lower.includes('stock')) return '💹 You can search stocks under the Buy section.';
-    if (lower.includes('watchlist')) return '📋 Your Watchlist is available on the main page.';
-    if (lower.includes('trend')) return '📈 Market trends indicate the general market direction.';
-    return '🤔 Sorry, I am still learning and don’t have an answer for that.';
+    const found = qaList.find(item => item.q.toLowerCase().includes(lower) || lower.includes(item.q.toLowerCase().split(' ')[1]));
+    return found ? found.a : '🤔 Sorry, I am still learning and don’t have an answer for that.';
   }
 
   function speakText(text) {
